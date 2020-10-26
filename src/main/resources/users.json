@@ -1,0 +1,23 @@
+[
+  {
+    "_class": "com.hacettepe.rehabsoft.entity.User",
+    "username" : "eren",
+    "password": "eren",
+    "nameSurname" : "Eren Gulum",
+    "email" : "eren@hacettepe.com"
+  },
+  {
+    "_class": "com.hacettepe.rehabsoft.entity.User",
+    "username" : "oktay",
+    "password": "oktay",
+    "nameSurname" : "Oktay Ugurlu",
+    "email" : "oktay@hacettepe.com"
+  },
+  {
+    "_class": "com.hacettepe.rehabsoft.entity.User",
+    "username" : "deniz",
+    "password": "deniz",
+    "nameSurname" : "Deniz Guner",
+    "email" : "deniz@hacettepe.com"
+  }
+]
