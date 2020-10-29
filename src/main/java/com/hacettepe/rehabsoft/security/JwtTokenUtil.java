@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
@@ -26,8 +27,7 @@ import static com.hacettepe.rehabsoft.util.Constants.SIGNING_KEY;
 
 
 @Component
-public class JwtTokenUtil {
-
+public class JwtTokenUtil implements Serializable {
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -89,4 +89,5 @@ public class JwtTokenUtil {
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
+
 }

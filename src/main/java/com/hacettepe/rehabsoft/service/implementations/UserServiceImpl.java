@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
 
+
     @Override
     public UserDto getById(Long id) {
         User tempUser = userRepository.getOne(id);

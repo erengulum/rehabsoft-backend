@@ -22,16 +22,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import static com.hacettepe.rehabsoft.util.Constants.TOKEN_PREFIX;
+import static com.hacettepe.rehabsoft.util.Constants.HEADER_STRING;
 
 @Service
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
-    public static final String TOKEN_PREFIX = "Bearer ";
-    public static final String HEADER_STRING = "Authorization";
+    //public static final String TOKEN_PREFIX = "Bearer ";
+    //public static final String HEADER_STRING = "Authorization";
 
-    @Resource
+    @Qualifier("userService")
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -43,27 +45,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         String username = null;
         String authToken = null;
         if (header != null && header.startsWith(TOKEN_PREFIX)) {
-            authToken = header.replace(TOKEN_PREFIX, "");
+            authToken = header.replace(TOKEN_PREFIX,"");
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
-                log.error("an error occured during getting username from token", e);
+                logger.error("an error occured during getting username from token", e);
             } catch (ExpiredJwtException e) {
-                log.warn("the token is expired and not valid anymore", e);
-            } catch (SignatureException e) {
-                log.error("Authentication Failed. Username or Password not valid.");
+                logger.warn("the token is expired and not valid anymore", e);
+            } catch(SignatureException e){
+                logger.error("Kullanici adiniz veya sifreniz yanlıs.Lütfen tekrar deneyin");
             }
         } else {
-            log.warn("couldn't find bearer string, will ignore the header");
+            logger.warn("couldn't find bearer string, will ignore the header");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+                UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthentication(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
+                //UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                log.info("authenticated user " + username + ", setting security context");
+                logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

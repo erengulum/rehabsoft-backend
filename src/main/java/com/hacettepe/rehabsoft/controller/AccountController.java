@@ -1,11 +1,7 @@
 package com.hacettepe.rehabsoft.controller;
-
-
 import com.hacettepe.rehabsoft.dto.LoginRequest;
 import com.hacettepe.rehabsoft.dto.RegistrationRequest;
 import com.hacettepe.rehabsoft.dto.TokenResponse;
-import com.hacettepe.rehabsoft.entity.Role;
-import com.hacettepe.rehabsoft.entity.User;
 import com.hacettepe.rehabsoft.repository.UserRepository;
 import com.hacettepe.rehabsoft.security.JwtTokenUtil;
 import com.hacettepe.rehabsoft.service.implementations.UserServiceImpl;
@@ -22,8 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
-
-import java.util.Set;
 
 @Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
