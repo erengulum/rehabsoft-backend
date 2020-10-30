@@ -45,12 +45,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
     }
 
+
+    //DEGISTI
     private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            //authorities.add(new SimpleGrantedAuthority(role.getName()));
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
+        Role role = user.getRole();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         return authorities;
         //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
@@ -61,6 +61,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserDto getById(Long id) {
         User tempUser = userRepository.getOne(id);
         return modelMapper.map(tempUser, UserDto.class);
+    }
+
+    public List<UserDto> getAll() {
+        List<User> data = userRepository.findAll();
+        return Arrays.asList(modelMapper.map(data, UserDto[].class));
     }
 
     @Override
@@ -87,15 +92,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             User user = new User();
             user.setEmail(registrationRequest.getEmail());
-            user.setNameSurname(registrationRequest.getNameSurname());
+            user.setFirstName(registrationRequest.getFirstName());
+            user.setSurname(registrationRequest.getSurname());
             //Password'u bcrypt ile sifreleyip kaydediyoruz
             user.setPassword(bCryptPasswordEncoder.encode(registrationRequest.getPassword()));
             user.setUsername(registrationRequest.getUsername());
-            user.setEnabled(true);
-            Set<Role> roleSet = new HashSet<Role>();
-            // Use add() method to add elements into the Set
-            roleSet.add(roleRepository.findByName("USER"));
-            user.setRoles(roleSet);
+            user.setRole(roleRepository.findByName("USER"));
             userRepository.save(user);
             return Boolean.TRUE;
         } catch (Exception e) {

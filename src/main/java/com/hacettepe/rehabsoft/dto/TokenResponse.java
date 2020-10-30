@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenResponse {
     private String username;
+    private String role;
     private String token;
 }

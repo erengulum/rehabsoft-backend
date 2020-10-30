@@ -11,6 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @Slf4j
@@ -24,12 +26,19 @@ public class UserController {
     private UserService userService;
 
 
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDto> getOne(@PathVariable(value = "id") Long id){
-        log.warn("GetOne metodu basariyla calisti");
+        log.warn("GetOne(User icin) metodu basariyla calisti");
         return ResponseEntity.ok(userService.getById(id));
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public ResponseEntity<List<UserDto>> listUsers(){
+        log.warn("listUsers(Admin icin) metodu basariyla calisti");
+        List<UserDto> data = userService.getAll();
+        return ResponseEntity.ok(data);
     }
 
 

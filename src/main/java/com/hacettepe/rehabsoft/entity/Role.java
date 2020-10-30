@@ -4,8 +4,10 @@ package com.hacettepe.rehabsoft.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -24,4 +26,6 @@ public class Role {
     @Column(name = "role_name", length = 100,unique=true)
     private String name;
 
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private Collection<User> users;
 }

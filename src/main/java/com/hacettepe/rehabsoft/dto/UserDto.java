@@ -16,8 +16,11 @@ public class UserDto {
     @ApiModelProperty(required = true,value = "ID")
     private Long id;
 
-    @ApiModelProperty(required = true,value = "Name Surname")
-    private String nameSurname;
+    @ApiModelProperty(required = true,value = "FirstName")
+    private String firstName;
+
+    @ApiModelProperty(required = true,value = "Surname")
+    private String surname;
 
     @ApiModelProperty(required = true,value = "E-Mail")
     private String email;

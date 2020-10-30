@@ -23,19 +23,20 @@ public class User {
     @Column(name = "pwd", length = 200)
     private String password;
 
-    @Column(name = "name_surname", length = 200)
-    private String nameSurname;
+    @Column(name = "firstname", length = 200)
+    private String firstName;
+
+    @Column(name = "surname", length = 200)
+    private String surname;
 
     @Column(name = "email", length = 100,unique=true)
     private String email;
 
-    private boolean enabled;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinTable(name = "USER_ROLES", joinColumns = {
             @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
             @JoinColumn(name = "ROLE_ID") })
-    private Set<Role> roles;
+    private Role role;
 
     public User(Long id){
         this.id = id;

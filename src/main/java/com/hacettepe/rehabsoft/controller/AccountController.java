@@ -47,8 +47,11 @@ public class AccountController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = jwtTokenUtil.generateToken(authentication);
 
+        //BU ROLE KULLANICININ ROLU OLARAK DINAMIK YAZILACAK!!!!!!!!!!!! DEGİSTİRMEYİ UNUTMA
+        String role = userRepository.findByUsername(loginRequest.getUsername()).getRole().getName();
+
         //Burada sorun olabilir:Bunu yaz:         return ResponseEntity.ok(new AuthToken(token));
-        return ResponseEntity.ok(new TokenResponse(loginRequest.getUsername(),token));
+        return ResponseEntity.ok(new TokenResponse(loginRequest.getUsername(),role,token));
     }
 
 
